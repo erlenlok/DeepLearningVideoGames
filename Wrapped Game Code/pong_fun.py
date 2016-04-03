@@ -28,8 +28,7 @@ circ_sur = pygame.Surface((15,15))
 circ = pygame.draw.circle(circ_sur,(255,255,255),(15/2,15/2),15/2)
 circle = circ_sur.convert()
 circle.set_colorkey((0,0,0))
-font = pygame.font.SysFont("calibri",40)
-
+font = pygame.font.SysFont("Arial",18)
 
 ai_speed = 15.
 
@@ -59,7 +58,7 @@ class GameState:
             self.bar1_move = ai_speed
         else: # don't move
             self.bar1_move = 0
-                
+
         self.score1 = font.render(str(self.bar1_score), True,(255,255,255))
         self.score2 = font.render(str(self.bar2_score), True,(255,255,255))
 
@@ -73,7 +72,7 @@ class GameState:
         screen.blit(self.score2,(380.,210.))
 
         self.bar1_y += self.bar1_move
-        
+
         #AI of the computer.
         if self.circle_x >= 305.:
             if not self.bar2_y == self.circle_y + 7.5:
@@ -83,7 +82,7 @@ class GameState:
                     self.bar2_y -= ai_speed
             else:
                 self.bar2_y == self.circle_y + 7.5
-        
+
         # bounds of movement
         if self.bar1_y >= 420.: self.bar1_y = 420.
         elif self.bar1_y <= 10. : self.bar1_y = 10.

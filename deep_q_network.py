@@ -6,12 +6,12 @@ import sys
 sys.path.append("Wrapped Game Code/")
 import pong_fun # whichever is imported "as game" will be used
 import dummy_game
-import tetris_fun as game
+import pong_fun as game
 import random
 import numpy as np
 from collections import deque
 
-GAME = 'tetris' # the name of the game being played for log files
+GAME = 'pong' # the name of the game being played for log files
 ACTIONS = 6 # number of valid actions
 GAMMA = 0.99 # decay rate of past observations
 OBSERVE = 500. # timesteps to observe before training
@@ -46,7 +46,7 @@ def createNetwork():
 
     W_conv3 = weight_variable([3, 3, 64, 64])
     b_conv3 = bias_variable([64])
-    
+
     W_fc1 = weight_variable([1600, 512])
     b_fc1 = bias_variable([512])
 
@@ -105,7 +105,7 @@ def trainNetwork(s, readout, h_fc1, sess):
     # saving and loading networks
     saver = tf.train.Saver()
     sess.run(tf.initialize_all_variables())
-    checkpoint = tf.train.get_checkpoint_state("saved_networks")
+    checkpoint = tf.train.get_checkpoint_state("pong_networks")
     if checkpoint and checkpoint.model_checkpoint_path:
         saver.restore(sess, checkpoint.model_checkpoint_path)
         print "Successfully loaded:", checkpoint.model_checkpoint_path
@@ -175,7 +175,7 @@ def trainNetwork(s, readout, h_fc1, sess):
 
         # save progress every 10000 iterations
         if t % 10000 == 0:
-            saver.save(sess, 'saved_networks/' + GAME + '-dqn', global_step = t)
+            saver.save(sess, 'pong_networks/' + GAME + '-dqn', global_step = t)
 
         # print info
         state = ""
@@ -185,7 +185,7 @@ def trainNetwork(s, readout, h_fc1, sess):
             state = "explore"
         else:
             state = "train"
-        print "TIMESTEP", t, "/ STATE", state, "/ LINES", game_state.total_lines, "/ EPSILON", epsilon, "/ ACTION", action_index, "/ REWARD", r_t, "/ Q_MAX %e" % np.max(readout_t)
+        print "TIMESTEP", t, "/ STATE", state, "/ EPSILON", epsilon, "/ ACTION", action_index, "/ REWARD", r_t, "/ Q_MAX %e" % np.max(readout_t)
 
         # write info to files
         '''
